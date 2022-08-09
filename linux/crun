@@ -1,0 +1,13 @@
+set -e
+echo compiling file
+g++ $1 -o a
+echo compiled succesfully
+if [ ! -z "$2" ]
+    then
+        out=$1
+        ./a < $2 >> ${out%.*}.out
+    else
+        ./a
+        read -n 1 -p "Press any key to continue . . ." mainmenuinput
+fi
+rm a
