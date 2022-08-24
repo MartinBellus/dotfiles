@@ -14,7 +14,7 @@ filetype indent on
 syntax on
 
 " Add numbers to each line on the left-hand side.
-set number
+set relativenumber
 
 " Highlight cursor line underneath the cursor horizontally.
 set cursorline
@@ -84,12 +84,15 @@ autocmd BufEnter * silent! lcd %:p:h
 autocmd BufWritePost * silent! lcd %:p:h
 
 " Add custom types to highlight group
-fun! SetMyTodos()
-    syn keyword myTypes ll
+fun! SetMyTypes()
+    syn keyword myTypes ll string
     hi link myTypes Type
 endfu
-autocmd bufenter * :call SetMyTodos()
-autocmd filetype * :call SetMyTodos()
+autocmd bufenter * :call SetMyTypes()
+autocmd filetype * :call SetMyTypes()
 
 " Show current row and column
 set ruler
+
+" Hide toolbar
+set go-=T
