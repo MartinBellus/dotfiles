@@ -10,11 +10,18 @@ filetype plugin on
 "Load an indent file for the detected file type.
 filetype indent on
 
+filetype detect
+
+if &filetype=='cpp'
+    source D:/Vim/_cpp.vim
+endif
+
 "Turn suntax highlighting on.
 syntax on
 
 " Add numbers to each line on the left-hand side.
 set relativenumber
+set number
 
 " Highlight cursor line underneath the cursor horizontally.
 set cursorline
@@ -67,13 +74,14 @@ set guifont=Consolas:h12
 
 " Default colorscheme.
 colorscheme molokai
-let g:molokai_original = 1
+let g:molokai_original = 0
 let g:molokai_italic = 0
 
 " Do not move cursor to matching bracket
 set noshowmatch
 
 " Mappings
+let mapleader = " "
 inoremap ii <esc>
 
 " Maximize window
@@ -83,16 +91,11 @@ autocmd GUIEnter * simalt ~x
 autocmd BufEnter * silent! lcd %:p:h   
 autocmd BufWritePost * silent! lcd %:p:h
 
-" Add custom types to highlight group
-fun! SetMyTypes()
-    syn keyword myTypes ll string
-    hi link myTypes Type
-endfu
-autocmd bufenter * :call SetMyTypes()
-autocmd filetype * :call SetMyTypes()
-
 " Show current row and column
 set ruler
 
 " Hide toolbar
 set go-=T
+
+" Not comment next line
+au filetype * set formatoptions-=cro
