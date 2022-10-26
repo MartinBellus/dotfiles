@@ -13,7 +13,7 @@ filetype indent on
 filetype detect
 
 if &filetype=='cpp'
-    source D:/Vim/_cpp.vim
+    source $LANG/_cpp.vim
 endif
 
 "Turn suntax highlighting on.
@@ -74,7 +74,7 @@ set guifont=Consolas:h12
 
 " Default colorscheme.
 colorscheme molokai
-let g:molokai_original = 0
+let g:molokai_original = 1
 let g:molokai_italic = 0
 
 " Do not move cursor to matching bracket
@@ -83,6 +83,23 @@ set noshowmatch
 " Mappings
 let mapleader = " "
 inoremap ii <esc>
+nnoremap <silent> <leader><cr> :noh<cr>
+
+" Brackets
+inoremap $1 ()<esc>i
+inoremap $2 []<esc>i
+inoremap $3 {}<esc>i
+inoremap $4 {<esc>o}<esc>O
+inoremap $q ''<esc>i
+inoremap $e ""<esc>i
+inoremap $t <><esc>i
+
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+vnoremap $t <esc>`>a><esc>`<i<<esc>
 
 " Maximize window
 autocmd GUIEnter * simalt ~x
@@ -99,3 +116,7 @@ set go-=T
 
 " Not comment next line
 au filetype * set formatoptions-=cro
+
+" Toggle between relative and absolute nubering
+" au insertenter * set norelativenumber
+" au insertleave * set relativenumber

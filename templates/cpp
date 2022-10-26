@@ -1,0 +1,17 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define f first
+#define s second
+
+void setIO(string name="") {
+	cin.tie(0)->sync_with_stdio(0);
+	if (!name.empty()) {
+		freopen((name+".in").c_str(), "r", stdin);
+		freopen((name+".out").c_str(), "w", stdout);
+	}
+}
+
+int main(){
+	setIO();
+}
