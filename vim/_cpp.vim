@@ -7,7 +7,7 @@ endfu
 autocmd bufenter * :call SetMyTypes()
 autocmd filetype * :call SetMyTypes()
 
-let mapleader = " "
+" Comment current line
 fun! CommentLine()
     normal! yy
     if @" =~# '^\s*\/\/.*'
@@ -16,14 +16,45 @@ fun! CommentLine()
         normal! I//
     endif
 endfu
-noremap <silent> <leader>/ :call CommentLine()<cr>
 
-fun! Init()
-    if filereadable($TEMPLATES . "/cpp")
-        exec "r " . $TEMPLATES . "/cpp"
-        normal! 0ggdd16gg
+" Create nested for loops
+fun! For(...)
+    let varnames = ['i','j','k','l','m','n','o']
+    let c = 0
+    if a:0 == 0
+        call inputsave()
+        let temp = input("Limits: ")
+        let args = split(temp)
+        call inputrestore()
+        for l in args
+            exec "normal! a" . "for(int " . varnames[c] . " = 0;" . varnames[c] . "<" . l . ";" . varnames[c] . "++)\<Esc>"
+            let c += 1
+        endfor
+    else
+        for l in a:000
+            exec "normal! a" . "for(int " . varnames[c] . " = 0;" . varnames[c] . "<" . l . ";" . varnames[c] . "++)\<Esc>"
+            let c += 1
+        endfor
     endif
 endfu
+
+let mapleader = " "
+
+noremap <silent> <leader>/ :call CommentLine()<cr>
+nnoremap <silent> <leader>f :call For()<cr>
+
+" Load cpp template
+fun! Init()
+    let path = expand("%:p")
+    if filereadable($TEMPLATES . "/cpp") && stridx(path,"Kody") != -1
+        exec "r " . $TEMPLATES . "/cpp"
+        normal! 0ggdd17gg
+    elseif filereadable($TEMPLATES . "/cpp_basic")
+        exec "r " . $TEMPLATES . "/cpp_basic"
+        normal! 0ggdd5gg
+    endif
+endfu
+
 au bufnewfile * :call Init()
 setlocal foldmethod=syntax
 setlocal foldlevel=20
