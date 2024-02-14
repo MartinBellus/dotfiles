@@ -46,7 +46,7 @@ nnoremap <silent> <leader>f :call For()<cr>
 " Load cpp template
 fun! Init()
     let path = expand("%:p")
-    if filereadable($TEMPLATES . "/cpp") && stridx(path,"Kody") != -1
+    if filereadable($TEMPLATES . "/cpp") && (stridx(path,"Kody") != -1 || stridx(path,"Skola") != -1)
         exec "r " . $TEMPLATES . "/cpp"
         normal! 0ggdd17gg
     elseif filereadable($TEMPLATES . "/cpp_basic")

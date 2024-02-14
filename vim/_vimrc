@@ -1,6 +1,12 @@
 "Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
 
+"Set encoding to utf-8
+set encoding=utf-8
+
+"Switch buffers without saving
+set hidden
+
 "Enable type file detection. Vim will be able to try to detect the type of file in use.
 filetype on
 
@@ -12,10 +18,6 @@ filetype indent on
 
 filetype detect
 
-if &filetype=='cpp'
-    source $LANG/_cpp.vim
-endif
-
 "Turn suntax highlighting on.
 syntax on
 
@@ -26,13 +28,11 @@ set number
 " Highlight cursor line underneath the cursor horizontally.
 set cursorline
 
-" Set shift width to 4 spaces.
-set shiftwidth=4
-
-" Set tab width to 4 columns.
+" Set tab and shift width to 4 columns.
+" Backspace can delete normally in insert mode
 set tabstop=4
-
-" Use space characters instead of tabs.
+set shiftwidth=0
+set softtabstop=-1
 set expandtab
 
 " Do not save backup files.
@@ -60,14 +60,19 @@ set showcmd
 " Show the mode you are on the last line.
 set showmode
 
-" Show matching words during a search.
-set showmatch
-
 " Use highlighting when doing a search.
 set hlsearch
 
 " Set the commands to save in history default number is 20.
 set history=1000
+
+" Show current row and column
+set ruler
+
+" Hide toolbar and scrollbar
+set go-=T
+set go-=r
+set go-=L
 
 " Set font.
 set guifont=Consolas:h12
@@ -77,29 +82,42 @@ colorscheme molokai
 let g:molokai_original = 1
 let g:molokai_italic = 0
 
-" Do not move cursor to matching bracket
-set noshowmatch
+let g:use_brackets=1
+
+" Language specifics
+if &filetype=='cpp'
+    source $LANG/_cpp.vim
+endif
+if &filetype=='markdown'
+    source $LANG/_md.vim
+endif
 
 " Mappings
 let mapleader = " "
 inoremap ii <esc>
 nnoremap <silent> <leader><cr> :noh<cr>
 
-" Brackets
-inoremap $1 ()<esc>i
-inoremap $2 []<esc>i
-inoremap $3 {}<esc>i
-inoremap $4 {<esc>o}<esc>O
-inoremap $q ''<esc>i
-inoremap $e ""<esc>i
-inoremap $t <><esc>i
+" Center screen after ctrl-d
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
 
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
-vnoremap $t <esc>`>a><esc>`<i<<esc>
+" Brackets
+if g:use_brackets==1
+    inoremap $1 ()<esc>i
+    inoremap $2 []<esc>i
+    inoremap $3 {}<esc>i
+    inoremap $4 {<esc>o}<esc>O
+    inoremap $q ''<esc>i
+    inoremap $e ""<esc>i
+    inoremap $t <><esc>i
+
+    vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+    vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+    vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+    vnoremap $q <esc>`>a'<esc>`<i'<esc>
+    vnoremap $e <esc>`>a"<esc>`<i"<esc>
+    vnoremap $t <esc>`>a><esc>`<i<<esc>
+endif
 
 " Maximize window
 autocmd GUIEnter * simalt ~x
@@ -108,15 +126,17 @@ autocmd GUIEnter * simalt ~x
 autocmd BufEnter * silent! lcd %:p:h   
 autocmd BufWritePost * silent! lcd %:p:h
 
-" Show current row and column
-set ruler
-
-" Hide toolbar
-set go-=T
-
 " Not comment next line
 au filetype * set formatoptions-=cro
 
-" Toggle between relative and absolute nubering
-" au insertenter * set norelativenumber
-" au insertleave * set relativenumber
+"Remove LF
+set ff=unix
+
+"Add mappings for terminal
+map <Leader>t :bo vsp<bar>:term ++curwin ++close<cr><c-w>:vert res 50<cr>
+tmap <Leader>t <c-w>:bo vsp <bar> :term ++curwin ++close<cr>
+
+map <Leader>T :tab term ++close<cr>
+tmap <Leader>T <c-w>:tab term ++close<cr>
+
+tmap <Leader>p <c-w>"*
