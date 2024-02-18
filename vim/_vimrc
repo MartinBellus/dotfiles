@@ -21,6 +21,9 @@ filetype detect
 "Turn suntax highlighting on.
 syntax on
 
+" Turn off errorbell
+set noeb
+
 " Add numbers to each line on the left-hand side.
 set relativenumber
 set number
